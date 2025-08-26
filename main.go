@@ -3,16 +3,24 @@ package main
 import (
 	"fmt"
 	"math"
+	"strings"
 )
 
 const IMTPower = 2
 
 func main() {
-	fmt.Println("___ Калькулятор индекса массы тела ___")
-	userKg, userHeight := getUserInput()
-	IMT := calculateIMT(userKg, userHeight)
-	outputResult(IMT)
+	for {
+		fmt.Println("___ Калькулятор индекса массы тела ___")
+		userKg, userHeight := getUserInput()
+		IMT := calculateIMT(userKg, userHeight)
+		outputResult(IMT)
+		if !checkRepeatCalculation() {
+			break
+		}
+	}
+}
 
+func outputResult(IMT float64) {
 	switch {
 	case IMT < 16:
 		fmt.Println("У вас сильный дефицит массы тела")
@@ -25,10 +33,7 @@ func main() {
 	default:
 		fmt.Println("У вас степень ожирения")
 	}
-}
-
-func outputResult(imt float64) {
-	fmt.Printf("Ваш индекс массы тела: %.0f\n", imt)
+	fmt.Printf("Ваш индекс массы тела: %.0f\n", IMT)
 }
 
 func calculateIMT(kg float64, height float64) float64 {
@@ -42,4 +47,11 @@ func getUserInput() (float64, float64) {
 	fmt.Println("Введлите ваш вес в килограммах:")
 	fmt.Scan(&userKg)
 	return userKg, userHeight
+}
+
+func checkRepeatCalculation() bool {
+	var userChoise string
+	fmt.Println("Вы хотите повторить расчет? (Y/N)")
+	fmt.Scan(&userChoise)
+	return strings.ToUpper(userChoise) == "Y"
 }
